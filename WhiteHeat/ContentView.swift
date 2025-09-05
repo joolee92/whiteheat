@@ -6,16 +6,29 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
+    @State private var player: AVAudioPlayer?
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        HStack {
+            Button("Play"){
+                if let url = Bundle.main.url(forResource: "swimming_in_the_dark", withExtension: "wav") {
+                    do {
+                        player = try AVAudioPlayer(contentsOf: url)
+                        player?.play()
+                    } catch {
+                        print("Error playing audio")
+                    }
+                }
+            }
+            Button("Pause"){
+                if ((player?.isPlaying) != nil) {
+                    player?.pause()
+                }
+            }
         }
-        .padding()
+        .buttonStyle(.bordered)
     }
 }
 
